@@ -54,7 +54,7 @@ public class UserController {
             System.out.println(hasUser.size());
             if(hasUser.isEmpty()){
                 httpResponseEntity.setCode("0");
-                httpResponseEntity.setData(hasUser.get(0));
+                httpResponseEntity.setData(null);
                 httpResponseEntity.setMassage("查询用户列表失败!");
             }else{
                 httpResponseEntity.setCode("666");

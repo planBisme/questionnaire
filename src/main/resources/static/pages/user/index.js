@@ -11,7 +11,7 @@ const fetchUserList = () => {
   let params = {
     pageNum,
     pageSize: 10,
-    userName: $('#username').val()
+    username :$('username').val(),//:$('userName').val(),//: //$('#headerUsername').val()
   }
   $.ajax({
     url: API_BASE_URL + '/admin/queryUserList',
@@ -26,7 +26,7 @@ const fetchUserList = () => {
         $('#table #tbody').append(`
           <tr>
             <td>${index + 1}</td>
-            <td>${item.username}</td>
+            <td>${item.userName}</td>
             <td>${item.password}</td>
             <td>${item.startTime}</td>
             <td>${item.endTime}</td>

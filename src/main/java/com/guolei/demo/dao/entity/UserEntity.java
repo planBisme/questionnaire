@@ -9,7 +9,7 @@ public class UserEntity {
     private String username;
     private String password;
     private Date startTime;
-    private Date stopTime;
+    private Date endTime;
     private String status;
     private String createdBy;
     private Date creationDate;
@@ -49,12 +49,12 @@ public class UserEntity {
         this.startTime = startTime;
     }
 
-    public Date getStopTime() {
-        return stopTime;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setStopTime(Date stopTime) {
-        this.stopTime = stopTime;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public String getStatus() {
@@ -103,5 +103,22 @@ public class UserEntity {
 
     public void setLastUpdate(String lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id='" + id + '\'' +
+                ", userName='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status='" + status + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", creationDate=" + creationDate +
+                ", lastUpdatedBy='" + lastUpdatedBy + '\'' +
+                ", lastUpdateDate=" + lastUpdateDate +
+                ", lastUpdate='" + lastUpdate + '\'' +
+                '}';
     }
 }
