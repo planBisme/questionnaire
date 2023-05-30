@@ -81,7 +81,7 @@ class DemoApplicationTests {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         //创建UserMapper对象，mybatis自动生成mapper代理对象
         UserEntityMapper userEntityMapper = sqlSession.getMapper(UserEntityMapper.class);
         //调用userMapper的方法
@@ -100,12 +100,13 @@ class DemoApplicationTests {
         }
     }
 
-   //@Test
+   @Test
     public void deleteUserByName() throws Exception {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //修改之前的事务为已提交状态
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         //创建UserMapper对象，mybatis自动生成mapper代理对象
         UserEntityMapper userEntityMapper = sqlSession.getMapper(UserEntityMapper.class);
         //调用userMapper的方法
@@ -125,7 +126,7 @@ class DemoApplicationTests {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         //创建UserMapper对象，mybatis自动生成mapper代理对象
         ProjectEntityMapper projectEntityMapper = sqlSession.getMapper(ProjectEntityMapper.class);
         //调用userMapper的方法
@@ -167,7 +168,7 @@ class DemoApplicationTests {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         //创建UserMapper对象，mybatis自动生成mapper代理对象
         ProjectEntityMapper projectEntityMapper = sqlSession.getMapper(ProjectEntityMapper.class);
         //调用userMapper的方法
@@ -189,7 +190,7 @@ class DemoApplicationTests {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         //创建UserMapper对象，mybatis自动生成mapper代理对象
         ProjectEntityMapper projectEntityMapper = sqlSession.getMapper(ProjectEntityMapper.class);
         //调用userMapper的方法
