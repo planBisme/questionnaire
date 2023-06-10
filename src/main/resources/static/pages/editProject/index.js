@@ -1,7 +1,7 @@
 let project = {}
 
 onload = () => {
-  $('#headerUsername').text($util.getItem('userInfo').username)
+  $('#headerUsername').text($util.getItem('userInfo'))
   $('#headerDivB').text('编辑项目')
 
   project = $util.getPageParam('editProject')
@@ -14,7 +14,9 @@ const handleSaveChange = () => {
   let params = {
     id: project.id,
     projectName: $('#projectName').val(),
-    projectContent: $('#projectDescribe').val()
+    projectContent: $('#projectDescribe').val(),
+    lastUpdatedBy:$util.getItem('userInfo'),
+    lastUpdateDate: new Date(),
   }
   if (!params.projectName) return alert('项目名称不能为空！')
   if (!params.projectContent) return alert('项目描述不能为空！')
@@ -25,7 +27,7 @@ const handleSaveChange = () => {
     dataType: "json",
     contentType: "application/json",
     success(res) {
-      alert(res.message)
+      alert("修改项目信息成功")
       location.href = "/pages/questionnaire/index.html"
     }
   })

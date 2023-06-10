@@ -33,4 +33,6 @@ public interface UserEntityMapper {
     List<UserEntity> selectUserInfo (UserEntity userEntity);
 
     int deleteUserByName(UserEntity userEntity);
+
+ int closeUserById(UserEntity userEntity);
 }

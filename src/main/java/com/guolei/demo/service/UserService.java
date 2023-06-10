@@ -39,4 +39,8 @@ public class UserService {
     }
 
 
+    public int closeUserById(UserEntity userEntity) {
+        int result=userEntityMapper.closeUserById(userEntity);
+        return result;
+    }
 }

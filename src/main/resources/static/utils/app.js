@@ -1,6 +1,7 @@
 import { getItem } from "./storage.js"
 
 
+
 const whiteList = [
   '/pages/login/index.html',
   '/pages/answerSheet/index.html'

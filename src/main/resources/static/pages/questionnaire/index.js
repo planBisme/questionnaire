@@ -1,6 +1,7 @@
 onload = () => {
-  $('#headerUsername').text($util.getItem('userInfo').username)
   handleHeaderLoad()
+  $('#headerUsername').text($util.getItem('userInfo'))
+  //查询工程列表并添加到主体
   fetchProjectList()
 }
 
@@ -27,14 +28,14 @@ const fetchProjectList = () => {
             <div class="list-header">
               <div>${item.projectName}</div>
               <div>
-                <button type="button" class="btn btn-link" onclick="onCreateQuestionnaire()">创建问卷</button>
+                <button type="button" class="btn btn-link" onclick="onCreateQuestionnaire('${item.projectName}')">创建问卷</button>
                 <button type="button" class="btn btn-link" onclick="onSeeProject('${item.id}')">查看</button>
                 <button type="button" class="btn btn-link" onclick="onEditProject('${item.id}')">编辑</button>
                 <button type="button" class="btn btn-link" onclick="onDelProject('${item.id}')">删除</button>
               </div>
             </div>
             <div class="list-footer">
-              <div>暂无调查问卷或问卷已过期</div>
+              <div>${item.projectContent}</div>
             </div>
           </div>
         `)
@@ -47,7 +48,10 @@ const onCreatePrject = () => {
   location.href = "/pages/createProject/index.html"
 }
 
-const onCreateQuestionnaire = () => {
+const onCreateQuestionnaire = (projectName)  => {
+  console.log(projectName)
+  //const encodedProjectName = encodeURIComponent(projectName);
+  $util.setPageParam('createQuestionnaire', projectName)
   location.href = "/pages/createQuestionnaire/index.html"
 }
 
@@ -64,7 +68,6 @@ const onEditProject = (id) => {
 
 const onDelProject = (pid) => {
   let state = confirm("确认删除该项目吗？")
-
   if (state) {
     let params = {
       id:pid
@@ -72,7 +75,7 @@ const onDelProject = (pid) => {
     //alert(JSON.stringify(params))
     $.ajax({
       url: API_BASE_URL + '/deleteProjectById',
-      type: "POST",
+      type: "DELETE",
       data: JSON.stringify(params),
       dataType: "json",
       contentType: "application/json",
@@ -82,5 +85,24 @@ const onDelProject = (pid) => {
       }
     })
   }
-  
+}
+const fetchHistoryProjectList = (pid) => {
+  let state = confirm("确认删除该项目吗？")
+  if (state) {
+    let params = {
+      id:pid
+    }
+    //alert(JSON.stringify(params))
+    $.ajax({
+      url: API_BASE_URL + '/deleteProjectById',
+      type: "DELETE",
+      data: JSON.stringify(params),
+      dataType: "json",
+      contentType: "application/json",
+      success(res) {
+        alert(res.message)
+        fetchProjectList()
+      }
+    })
+  }
 }

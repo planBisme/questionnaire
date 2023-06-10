@@ -1,12 +1,16 @@
 onload = () => {
-  $('#headerUsername').text($util.getItem('userInfo').username)
+  $('#headerUsername').text($util.getItem('userInfo'))
   $('#headerDivB').text('创建项目')
 }
 
 const handleCreateProject = () => {
+  console.log($util.getItem('curUserID'))
   let params = {
-    createdBy: $util.getItem('userInfo').username,
-    lastUpdatedBy: $util.getItem('userInfo').username,
+    createdBy: $util.getItem('userInfo'),
+    userId:$util.getItem('curUserID'),
+    lastUpdatedBy: $util.getItem('userInfo'),
+    creationDate : new Date(),
+    lastUpdateDate:new Date(),
     projectName: $('#projectName').val(),
     projectContent: $('#projectDescribe').val()
   }
@@ -22,4 +26,5 @@ const handleCreateProject = () => {
       alert('创建成功！')
     }
   })
+  //location.href = "/pages/questionnaire/index.html"
 }

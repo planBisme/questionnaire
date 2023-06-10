@@ -1,12 +1,68 @@
 onload = () => {
-  $('#headerUsername').text($util.getItem('userInfo').username)
-  $('#headerDivB').text('创建问卷')
+  $('#headerUsername').text($util.getItem('userInfo'))
+  $('#headerDivB').text('创建问卷！')
+  // let test = $util.getPageParam('createQuestionnaire')
+  let test = `${$util.getPageParam('createQuestionnaire')}`
+  let projectId=$util.getPageParam('seeProject')
+
+  console.log(test)
+  console.log("???")
+  fetchProjectList(test)
 }
 
 const onCreateTemplate = () => {
+
   location.href = "/pages/createNewQuestionnaire/index.html"
 }
 
+const fetchProjectList = ( test) => {
+  let params = {
+    createdBy: $util.getItem('userInfo').username,
+    projectName: $('#projectName').val()
+  }
+  $.ajax({
+    url: API_BASE_URL + '/queryProjectList',
+    type: "POST",
+    data: JSON.stringify(params),
+    dataType: "json",
+    contentType: "application/json",
+    success(res) {
+      projectList = res.data
+      // for(int i = 0; i < res.data.length; i++);
+      // for(let item : res.data);
+      // res.data.foreach(item => {
+      //
+      // })
+      // $('#selectLeo').append(`
+      //
+      //       <option value=i selected>${item.projectName}</option> i++
+      //   `)
+      let i=1
+      res.data.map(item => {
+        console.log(item.projectName)
+
+        if( test== item.projectName
+
+
+        ){
+          $('#selectLeo').append(`
+            <option value=i selected>${item.projectName}</option>
+        `)
+          console.log('找到了')
+          //system.out.printlen("找到了")
+          i++
+        }
+        else{
+          $('#selectLeo').append(`
+            <option value=i >${item.projectName}</option>
+        `)
+          console.log('没找到')
+          i++
+        }
+      })
+    }
+  })
+}
 const importHistoryQuestionnaire = () => {
   $('#divider').css('display', 'flex')
   $('#templateB').html('')

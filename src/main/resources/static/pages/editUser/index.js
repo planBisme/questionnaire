@@ -1,9 +1,6 @@
 onload = () => {
-  //$('#headerUsername').text($util.getItem('userInfo').username)
-
   $('#headerUsername').text($util.getItem('userInfo'))
-  $('#headerDivB').text('创建用户')
-
+  $('#headerDivB').text('修改用户信息')
   $('#startTime').datetimepicker({
     language: 'zh-CN', // 显示中文
     format: 'yyyy-mm-dd hh:mm:ss', // 显示格式
@@ -36,8 +33,7 @@ onload = () => {
   }
 }
 
-const handleCreateUser = () => {
-
+const handleEditUser = () => {
   if (!$('#username').val()) return alert('账号不能为空！')
   if (!$('#password').val()) return alert('密码不能为空！')
   if (!($('#startDate').val() && new Date($('#startDate').val()).getTime())) return alert('开始时间不能为空！')
@@ -49,7 +45,7 @@ const handleCreateUser = () => {
   if(!user) {
     user = {};
   }
- 
+  user.id=$util.getPageParam('user').id;
   user.username = $('#username').val();
   user.password = $('#password').val();
   user.startTime = $('#startDate').val() && new Date($('#startDate').val()).getTime();
@@ -71,7 +67,7 @@ const handleCreateUser = () => {
           location.href = '/pages/user/index.html'
         } else {
           return alert('用户名已经被占用！')
-          //alert(res.message)
+
         }
       },
       error: function(xhr, textStatus, errorThrown) {
@@ -101,28 +97,5 @@ const handleCreateUser = () => {
     })
   }
 
-  // let params = {
-  //   username: $('#username').val(),
-  //   password: $('#password').val(),
-  //   startTime: $('#startDate').val() && new Date($('#startDate').val()).getTime(),
-  //   stopTime: $('#endDate').val() && new Date($('#endDate').val()).getTime()
-  // }
-  // if (!params.username) return alert('账号不能为空！')
-  // if (!params.password) return alert('密码不能为空！')
-  // if (!params.startTime) return alert('开始时间不能为空！')
-  // if (!params.stopTime) return alert('结束时间不能为空！')
-  // $.ajax({
-  //   url: API_BASE_URL + '/admin/addUserInfo',
-  //   type: 'POST',
-  //   data: JSON.stringify(params),
-  //   dataType: 'json',
-  //   contentType: 'application/json',
-  //   success(res) {
-  //     if (res.code === "666") {
-  //       location.href = '/pages/user/index.html'
-  //     } else {
-  //       alert(res.message)
-  //     }
-  //   }
-  // })
+
 }

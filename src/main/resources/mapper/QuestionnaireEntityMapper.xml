@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guolei.demo.dao.QuestionnaireEntityMapper">
+    <resultMap id="BaseResultMap" type="com.guolei.demo.dao.entity.QuestionnaireEntity">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="projectName" jdbcType="VARCHAR" property="projectName" />
+        <result column="questionnaireName" jdbcType="VARCHAR" property="questionnaireName" />
+        <result column="questionnaireContent" jdbcType="VARCHAR" property="questionnaireContent" />
+        <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+        <result column="creationDate" jdbcType="TIMESTAMP" property="creationDate" />
+        <result column="startTime" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="com.guolei.demo.dao.entity.QuestionEntity">
+        <id column="questionId" jdbcType="VARCHAR" property="questionId" />
+        <result column="surveyId" jdbcType="VARCHAR" property="surveyId" />
+        <result column="questionText" jdbcType="VARCHAR" property="questionText" />
+        <result column="questionType" jdbcType="VARCHAR" property="questionType" />
+    </resultMap>
+    <resultMap id="BaseResultMap2" type="com.guolei.demo.dao.entity.OptionEntity">
+        <id column="optionId" jdbcType="VARCHAR" property="optionId" />
+        <result column="questionId" jdbcType="VARCHAR" property="questionId" />
+        <result column="optionContent" jdbcType="VARCHAR" property="optionContent" />
+        <result column="surveyId" jdbcType="VARCHAR" property="surveyId" />
+        <result column="number" jdbcType="INTEGER" property="number" />
+    </resultMap>
+
+    <insert id="insert">
+        insert into questionnaire_info (id,questionnaireName, questionnaireContent,createdBy,startTime,endTime,projectName)
+        values (#{id,jdbcType=VARCHAR},#{questionnaireName,jdbcType=VARCHAR}, #{questionnaireContent,jdbcType=VARCHAR},
+                #{createdBy,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},#{projectName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertQues" parameterType="com.guolei.demo.dao.entity.QuestionEntity">
+      insert  into question_info(questionId,surveyId,questionText,questionType)
+      values (#{questionId,jdbcType=VARCHAR},#{surveyId,jdbcType=VARCHAR},#{questionText,jdbcType=VARCHAR},#{questionType,jdbcType=VARCHAR});
+
+    </insert>
+    <insert id="insertOption" parameterType="com.guolei.demo.dao.entity.OptionEntity">
+        insert  into option_info(optionId,questionId,optionContent,surveyId)
+        values (#{optionId,jdbcType=VARCHAR},#{questionId,jdbcType=VARCHAR},#{optionContent,jdbcType=VARCHAR},#{surveyId,jdbcType=VARCHAR})
+    </insert>
+    <update id="releaseQuestionnaire" parameterType="com.guolei.demo.dao.entity.QuestionnaireEntity">
+        UPDATE questionnaire_info SET status = 1
+        WHERE id=#{id,jdbcType=INTEGER}
+
+    </update>
+    <update id="updateOption" parameterType="com.guolei.demo.dao.entity.OptionEntity">
+        update  option_info
+        set number = number+1
+        where surveyId=#{surveyId,jdbcType=VARCHAR} and questionId =#{questionId,jdbcType=VARCHAR} and optionId=#{optionId,jdbcType=VARCHAR}
+    </update>
+    <select id="queryQuestionnaireList"  resultType="com.guolei.demo.dao.entity.QuestionnaireEntity" parameterType="com.guolei.demo.dao.entity.QuestionnaireEntity">
+        select *
+        from questionnaire_info
+        where projectName=#{projectName,jdbcType=VARCHAR}
+    </select>
+    <select id="queryQuestionList" resultType="com.guolei.demo.dao.entity.QuestionEntity">
+        select *
+        from question_info
+        where surveyId=#{surveyId,jdbcType=VARCHAR}
+    </select>
+    <select id="queryOptionList" resultType="com.guolei.demo.dao.entity.OptionEntity">
+        select *
+        from option_info
+        where surveyId=#{surveyId,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

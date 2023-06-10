@@ -7,6 +7,7 @@ const problem = []
  * 
  * @param {*} type 1：单选，2：多选，3：填空，4：矩阵，5：量表
  */
+//添加各种类型的问题
 const onAddQuestion = (type) => {
   let ele
   switch (type) {
@@ -30,7 +31,8 @@ const onAddQuestion = (type) => {
   }
   $('#problem').append(ele)
   problem.push({ problemName: '', mustAnswer: true, option: [{}] })
-
+  console.log(problem)
+//设置问题的格式
   $(".question").hover(() => {
     let problemIndex = $('.question:hover').attr('data-problemIndex')
     let ele = `
@@ -48,25 +50,25 @@ const onAddQuestion = (type) => {
     $(".question").css('border', '1px solid #ffffff')
   })
 }
-
+//输入问题内容
 const onInput = (problemIndex, optionIndex, key) => {
   if (optionIndex || optionIndex === 0)
     problem[problemIndex].option[optionIndex][key] = $(`#question${problemIndex} #optionItem${optionIndex} #${key}`)[0].value
   else
     problem[problemIndex][key] = $(`#question${problemIndex} #${key}`)[0].value
 }
-
+//必答题选项
 const onMustAnswerClick = (problemIndex) => {
   problem[problemIndex].mustAnswer = !problem[problemIndex].mustAnswer
   if (problem[problemIndex].mustAnswer) $(`#question${problemIndex} #mustAnswer`).text('必答题')
   else $(`#question${problemIndex} #mustAnswer`).text('非必答题')
 }
-
+//取消编辑，恢复？
 const cancelEdit = (problemIndex) => {
   $(`#question${problemIndex} .bottom`).css('display', 'none')
   $(`#question${problemIndex} .bottom2`).css('display', 'block')
 }
-
+//上移实现
 const handleMoveUp = (problemIndex) => {
   if (problemIndex === 0) return
   $(`#question${problemIndex - 1}`).before($(`#question${problemIndex}`))
@@ -75,7 +77,7 @@ const handleMoveUp = (problemIndex) => {
   problem[problemIndex - 1] = i
   moveCommon()
 }
-
+//下移实现
 const handleMoveDown = (problemIndex) => {
   if (problemIndex === problem.length - 1) return
   $(`#question${problemIndex + 1}`).after($(`#question${problemIndex}`))
@@ -84,7 +86,7 @@ const handleMoveDown = (problemIndex) => {
   problem[problemIndex + 1] = i
   moveCommon()
 }
-
+//主方法？
 const moveCommon = () => {
   $('.question').map((index, item) => {
     item.setAttribute('id', `question${index}`)
@@ -149,17 +151,17 @@ const moveCommon = () => {
     }
   })
 }
-
+//处理编辑
 const handleEdit = (problemIndex) => {
   $(`#question${problemIndex} .bottom`).css('display', 'block')
   $(`#question${problemIndex} .bottom2`).css('display', 'none')
 }
-
+//处理删除
 const handleDelete = (problemIndex) => {
   $(`#question${problemIndex}`).remove()
   problem.splice(problemIndex, 1)
 }
-
+//添加单选选项
 const handleAddSingleChoice = () => {
   let ele = `
     <div class="question" id="question${problem.length}" data-type="1" data-problemIndex="${problem.length}">
@@ -190,7 +192,7 @@ const handleAddSingleChoice = () => {
   `
   return ele
 }
-
+//添加单选选项
 const singleChoiceAddOption = (problemIndex) => {
   $(`#question${problemIndex} #option`).append(`
     <div class="option-item" id="optionItem${problem[problemIndex].option.length}">
@@ -208,7 +210,7 @@ const singleChoiceDelOption = (problemIndex, optionIndex) => {
     index.onclick = singleChoiceDelOption.bind(this, problemIndex, item)
   })
 }
-
+//编辑单选选项
 const singleChoiceEditFinish = (problemIndex) => {
   $(`#question${problemIndex} .bottom`).css('display', 'none')
   $(`#question${problemIndex} .bottom2`).css('display', 'inline')
@@ -223,6 +225,7 @@ const singleChoiceEditFinish = (problemIndex) => {
       </div>
     `)
   })
+  console.log(problem)
 }
 
 const handleAddMultipleChoice = () => {
@@ -492,17 +495,84 @@ const handleModifyTitle = () => {
   $('#questionnaireDescription').val(questionnaireDescription)
 }
 
+//最后修改整个表
 
 const handleEditFinish = () => {
-  let params = {}
+  let test=`${$util.getItem('QuestionnaireID')}`
+  console.log(test)
+  let length=problem.length
+  let params= [];
+
+  for(let i = 1; i <= problem.length; i++) {
+    params[i - 1] = {};
+    params[i-1].questionId = i + "";
+    params[i-1].surveyId = test;
+    params[i-1].questionText = problem[i - 1].problemName;
+    params[i-1].questionType= `1`
+    let options = problem[i - 1].option;
+    if(!params[i-1].options) {
+      params[i-1].options = [];
+    }
+    for(let j = 1; j <= options.length; j++) {
+      params[i-1].options[j-1] = {};
+      params[i-1].options[j-1].optionId= j + "";
+      params[i-1].options[j-1].questionId= i + "";
+      params[i-1].options[j-1].surveyId = test;
+      params[i-1].options[j-1].optionContent=options[j - 1].chooseTerm;
+    }
+  }
+
+  console.log("-- 参数 --");
+  console.log(params);
+
   $.ajax({
     url: API_BASE_URL + '/modifyQuestionnaire',
     type: "POST",
     data: JSON.stringify(params),
     dataType: "json",
-    contentType: "application/jsoresn",
+    contentType: "application/json",
     success(res) {
       console.log(res)
     }
   })
+
+
+  // for(let i=0;i<length;i++){
+  //   params.questionId = `${i+1}`
+  //   params.surveyId = `${test}`
+  //   params.questionText =`${problem[i].problemName}`
+  //   params.questionType= `1`
+  //   let len=problem[i].option.length
+  //   for(let j=0;j<len;j++){
+  //     params.optionId= `${j}`
+  //     params.questionId=`${i}`
+  //     params.optionContent=`${problem[i].option[j].choosen}`
+  //     // 题目、选项
+  //
+  //     $.ajax({
+  //       url: 'http://127.0.0.1:8085' + '/modifyQuestionnaire',
+  //       type: "POST",
+  //       data: JSON.stringify(params),
+  //       dataType: "json",
+  //       contentType: "application/json",
+  //       success(res) {
+  //         console.log(res)
+  //       }
+  //     })
+  //   }
+  // }
+  alert('试卷内容提交成功！')
+  window.location.href='/pages/questionnaire/index.html'
+
+}
+
+const onPreview = () => {
+  //const arr=[1,2,3]
+  console.log(problem)
+  //$util.setPageParam('problem',problem)
+  const encodedArray = encodeURIComponent(JSON.stringify(problem));
+  const url = `/pages/answerSheet/index.html?data=${encodedArray}`;
+  //const url = `/pages/answerSheet/index.html`
+  window.location.href = url;
+  //window.open('/pages/answerSheet/index.html', '_self');
 }

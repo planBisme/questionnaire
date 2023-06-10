@@ -1,7 +1,8 @@
-
+//
 const pathnames = ['/pages/questionnaire/index.html']
 
 const handleHeaderLoad = () => {
+  $('#headerUsername').text($util.getItem('userInfo'))
   if (pathnames.includes(location.pathname)) {
     $('#handerFallback').remove()
     $('#headerDivB').remove()

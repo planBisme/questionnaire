@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table id="formTable">
+  <tr>
+    <th>序号</th>
+    <th>姓名</th>
+    <th>性别</th>
+    <th>年龄</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>小明</td>
+    <td>男</td>
+    <td>17</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>小红</td>
+    <td>女</td>
+    <td>18</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>小刚</td>
+    <td>男</td>
+    <td>18</td>
+  </tr>
+  <tr class="hidden_input">
+    <td colspan="4"><input type="text" name="note" value=""></td>
+  </tr>
+</table>
+<input type="button" value="导出表格为Excel" onclick="export_excel()" />
+<script src="./index.js"></script>
+<script src = "bower_components\jquery\dist\jquery.min.js"> </script >
+<script src = "bower_components\jquery-table2excel\dist\jquery.table2excel.min.js"> </script >
+
+</body>
+</html>
+
